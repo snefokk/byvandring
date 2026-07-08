@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="nb">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{TITLE}}</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<style>
+  :root {
+    --r1: {{COLOR_1}};
+    --r2: {{COLOR_2}};
+    --r3: {{COLOR_3}};
+    --r4: {{COLOR_4}};
+    --r5: {{COLOR_5}};
+    --r6: {{COLOR_6}};
+    --ink: #1a1a1a;
+    --paper: #ffffff;
+    --muted: #666;
+    --bg: #f4f1ea;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: var(--ink); background: var(--bg); line-height: 1.45; }
+  .top { background: #fff; padding: 24px 32px; border-bottom: 4px solid #222; }
+  .top h1 { margin: 0 0 4px 0; font-size: 28px; letter-spacing: 0.5px; }
+  .top .subtitle { color: var(--muted); font-size: 15px; }
+  .nav { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+  .nav a { display: inline-block; padding: 6px 12px; border-radius: 4px; color: #fff; text-decoration: none; font-size: 13px; font-weight: 600; }
+  .nav a.r1 { background: var(--r1); } .nav a.r2 { background: var(--r2); } .nav a.r3 { background: var(--r3); }
+  .nav a.r4 { background: var(--r4); } .nav a.r5 { background: var(--r5); } .nav a.r6 { background: var(--r6); }
+  .nav a.all { background: #333; }
+  .nav a:hover { opacity: 0.85; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px; }
+
+  /* A4 sheets */
+  .sheet { width: 210mm; min-height: 297mm; margin: 16px auto; background: var(--paper); box-shadow: 0 2px 8px rgba(0,0,0,0.12); padding: 12mm 12mm 10mm 12mm; display: flex; flex-direction: column; border-top: 8mm solid var(--accent); page-break-after: always; position: relative; }
+  .sheet[data-route="1"] { --accent: var(--r1); }
+  .sheet[data-route="2"] { --accent: var(--r2); }
+  .sheet[data-route="3"] { --accent: var(--r3); }
+  .sheet[data-route="4"] { --accent: var(--r4); }
+  .sheet[data-route="5"] { --accent: var(--r5); }
+  .sheet[data-route="6"] { --accent: var(--r6); }
+  .sheet-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4mm; }
+  .sheet-header h2 { margin: 0; font-size: 22pt; color: var(--accent); }
+  .sheet-header .meta { font-size: 10pt; color: var(--muted); text-align: right; }
+  .intro { font-size: 10pt; color: #333; margin-bottom: 3mm; font-style: italic; }
+  .map { height: 110mm; width: 100%; border: 1px solid #ccc; margin-bottom: 3mm; }
+  .info { font-size: 8.5pt; line-height: 1.32; columns: 2; column-gap: 6mm; column-rule: 1px dotted #ccc; }
+  .info .pt { break-inside: avoid; margin-bottom: 2.5mm; }
+  .info .pt h3 { margin: 0 0 1mm 0; font-size: 9.5pt; color: var(--accent); }
+  .info .pt h3 .num { background: var(--accent); color: #fff; padding: 0.5mm 1.5mm; border-radius: 2mm; margin-right: 1.5mm; font-weight: 700; font-size: 9pt; }
+  .info .pt .orig { color: var(--muted); font-size: 7.5pt; font-weight: normal; }
+  .info .pt p { margin: 0; }
+  .info .pt .src { color: var(--muted); font-size: 7pt; font-style: italic; margin-top: 0.6mm; }
+  .info .note { break-inside: avoid; margin: 1.5mm 0 2.5mm 0; padding: 1.5mm 2.5mm; background: rgba(0,0,0,0.04); border-left: 1.5mm solid var(--accent); font-style: italic; font-size: 8pt; color: #444; border-radius: 0 1mm 1mm 0; }
+  .info .note::before { content: "→ "; color: var(--accent); font-weight: bold; font-style: normal; }
+  .footer { margin-top: auto; padding-top: 2mm; font-size: 7.5pt; color: var(--muted); border-top: 1px solid #ddd; display: flex; justify-content: space-between; }
+
+  .num-marker { background: var(--accent); color: #fff; font-weight: 700; font-size: 11pt; border-radius: 50%; width: 26px; height: 26px; line-height: 26px; text-align: center; border: 2px solid #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.5); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+  .num-marker.r1 { background: var(--r1); } .num-marker.r2 { background: var(--r2); } .num-marker.r3 { background: var(--r3); }
+  .num-marker.r4 { background: var(--r4); } .num-marker.r5 { background: var(--r5); } .num-marker.r6 { background: var(--r6); }
+
+  .cover { width: 210mm; min-height: 297mm; margin: 16px auto; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.12); padding: 24mm 18mm; page-break-after: always; }
+  .cover h1 { font-size: 32pt; margin: 0 0 4mm 0; }
+  .cover .lead { font-size: 13pt; color: #444; margin-bottom: 8mm; }
+  .cover .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
+  .cover .card { border-left: 4mm solid var(--c); padding: 4mm 5mm; background: #fafafa; }
+  .cover .card h3 { margin: 0 0 2mm 0; color: var(--c); font-size: 13pt; }
+  .cover .card p { margin: 0; font-size: 10pt; color: #333; }
+  .cover .card .stats { margin-top: 2mm; font-size: 9pt; color: var(--muted); }
+  .cover .colophon { margin-top: 8mm; padding-top: 4mm; border-top: 1px solid #ddd; font-size: 8pt; line-height: 1.45; color: var(--muted); }
+  .cover .colophon strong { color: #333; }
+
+  /* Print */
+  @media print {
+    @page { size: A4 portrait; margin: 0; }
+    html, body { background: #fff; margin: 0; padding: 0; }
+    .top, .toolbar { display: none !important; }
+    .container { padding: 0; margin: 0; max-width: none; }
+    .sheet, .cover { box-shadow: none; margin: 0 !important; width: 210mm; height: 297mm !important; min-height: 0 !important; max-height: 297mm !important; overflow: hidden; page-break-after: always; page-break-inside: avoid; break-after: page; break-inside: avoid; }
+    .sheet:last-of-type, .cover:last-of-type { page-break-after: auto; break-after: auto; }
+    .map { height: 105mm !important; }
+    .info { font-size: 8pt; line-height: 1.28; }
+    .info .pt { margin-bottom: 2mm; }
+    .info .pt h3 { font-size: 9pt; margin-bottom: 0.5mm; }
+    .leaflet-control-container { display: none; }
+  }
+
+  .toolbar { background: #fff; padding: 10px 24px; border-bottom: 1px solid #ddd; font-size: 13px; color: #555; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
+  .toolbar button { padding: 6px 14px; border: 1px solid #333; background: #fff; cursor: pointer; font-size: 13px; border-radius: 4px; }
+  .toolbar button:hover { background: #f0f0f0; }
+
+  .pt-thumb { float: right; width: 28mm; height: 18mm; object-fit: cover; margin: 0 0 1.5mm 2mm; border: 1px solid #ccc; border-radius: 1mm; cursor: zoom-in; background: #eee; }
+  .pt-thumb:hover { opacity: 0.9; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
+
+  .lightbox { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.88); z-index: 9999; justify-content: center; align-items: center; cursor: zoom-out; }
+  .lightbox.active { display: flex; flex-direction: column; }
+  .lightbox img { max-width: 92vw; max-height: 82vh; box-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+  .lightbox .caption { color: #fff; margin-top: 14px; font-size: 14px; text-align: center; max-width: 80vw; }
+  .lightbox .close { position: fixed; top: 14px; right: 20px; color: #fff; font-size: 28px; line-height: 1; cursor: pointer; }
+
+  @media print {
+    .pt-thumb { display: none !important; }
+    .lightbox { display: none !important; }
+  }
+
+  /* Per-route style overrides */
+  {{EXTRA_CSS}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <h1>{{TITLE}}</h1>
+  <div class="subtitle">{{SUBTITLE}}</div>
+  <div class="nav" id="topNav"></div>
+</div>
+
+<div class="toolbar">
+  <span><strong>Tips:</strong> Bruk «Skriv ut» (Ctrl/Cmd+P) for å få hver løype som ett A4-ark.</span>
+  <button onclick="window.print()">Skriv ut</button>
+  <span style="margin-left:auto;color:#888">{{FOOTER_SOURCE}}</span>
+</div>
+
+<div class="container" id="container"></div>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <span class="close">&times;</span>
+  <img id="lightbox-img" alt="">
+  <div class="caption" id="lightbox-caption"></div>
+</div>
+
+<script>
+function openLightbox(src, caption) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox-caption').textContent = caption;
+  document.getElementById('lightbox').classList.add('active');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+// ===== DATA: punkter =====
+const points = {{POINTS_JSON}};
+
+// ===== DATA: løyper =====
+const routes = {{ROUTES_JSON}};
+
+// ===== DATA: gå-ruter =====
+const walkRoutes = {{WALK_ROUTES_JSON}};
+
+// ===== DATA: forsidetekst =====
+const coverData = {{COVER_DATA}};
+
+function buildNav() {
+  const nav = document.getElementById('topNav');
+  nav.innerHTML = '<a href="#cover" class="all">Oversikt</a>' +
+    routes.map(r => `<a href="#rute${r.id}" class="r${r.id}">${r.id} · ${r.name}</a>`).join('');
+}
+
+function buildCover() {
+  const c = document.getElementById('container');
+  let html = `<section class="cover" id="cover"><h1>${coverData.title}</h1><div class="lead">${coverData.lead}</div><div class="grid">`;
+  routes.forEach(r => {
+    const cv = `var(--r${r.id})`;
+    html += `<div class="card" style="--c:${cv};"><h3>${r.id} · ${r.name}</h3><p>${r.coverDescription || ''}</p><div class="stats">${r.coverStats || ''}</div></div>`;
+  });
+  if (coverData.extraCard) {
+    html += `<div class="card" style="--c:#333;"><h3>${coverData.extraCard.title}</h3><p>${coverData.extraCard.description}</p><div class="stats">${coverData.extraCard.stats || ''}</div></div>`;
+  }
+  html += `</div>`;
+  if (coverData.legend) html += `<div style="margin-top:10mm; padding:5mm; background:#fafafa; border-left:4mm solid #333;">${coverData.legend}</div>`;
+  if (coverData.colophon) html += `<div class="colophon">${coverData.colophon}</div>`;
+  html += `</section>`;
+  c.insertAdjacentHTML('beforeend', html);
+}
+
+function buildSheets() {
+  const c = document.getElementById('container');
+  routes.forEach(r => {
+    const html = `
+      <section class="sheet" data-route="${r.id}" id="rute${r.id}">
+        <div class="sheet-header"><h2>Løype ${r.id} — ${r.name}</h2><div class="meta">${r.meta || ''}</div></div>
+        <div class="intro">${r.intro || ''}</div>
+        <div class="map" id="map${r.id}"></div>
+        <div class="info" id="info${r.id}"></div>
+        <div class="footer"><span>${coverData.title} · Løype ${r.id} av ${routes.length}</span><span>${coverData.sourceCredit || ''}</span></div>
+      </section>`;
+    c.insertAdjacentHTML('beforeend', html);
+  });
+}
+
+function renderInfo(route) {
+  const root = document.getElementById('info' + route.id);
+  let html = '';
+  route.order.forEach((origNum, idx) => {
+    const p = points[origNum];
+    const localNum = idx + 1;
+    const addr = p.address ? ` <span class="orig">${p.address}</span>` : '';
+    const caption = (p.title || '') + (p.photo_credit ? ' — Foto: ' + p.photo_credit : '');
+    const img = p.image ? `<img class="pt-thumb" src="${p.image}" alt="${(p.title || '').replace(/"/g,'&quot;')}" onclick="event.stopPropagation(); openLightbox('${p.image}','${caption.replace(/'/g,"\\'")}')">` : '';
+    const src = p.source ? `<div class="src">Kilde: ${p.source}</div>` : '';
+    html += `<div class="pt">${img}<h3><span class="num">${localNum}</span>${p.title}${addr}</h3><p>${p.text}</p>${src}</div>`;
+    if (route.notes && route.notes[localNum]) html += `<div class="note">${route.notes[localNum]}</div>`;
+  });
+  root.innerHTML = html;
+}
+
+// De-overlapper markører i pikselrom: punkter som ligger nærmere enn MIN px
+// vifter ut i en liten sirkel rundt sitt felles tyngdepunkt. Kjøres på nytt ved
+// zoom/print siden pikselavstand avhenger av zoomnivå. Selve rute-linjen røres
+// ikke — bare de nummererte markørene flyttes litt.
+function spreadMarkers(map, markers) {
+  if (!markers || markers.length < 2) return;
+  const MIN = 30; // min senter-til-senter i px (markør er 26 px)
+  markers.forEach(m => m.setLatLng(m._base));
+  const pts = markers.map(m => map.latLngToContainerPoint(m._base));
+  const parent = markers.map((_, i) => i);
+  const find = i => { while (parent[i] !== i) { parent[i] = parent[parent[i]]; i = parent[i]; } return i; };
+  for (let i = 0; i < pts.length; i++)
+    for (let j = i + 1; j < pts.length; j++)
+      if (pts[i].distanceTo(pts[j]) < MIN) parent[find(i)] = find(j);
+  const groups = {};
+  markers.forEach((m, i) => { const r = find(i); (groups[r] = groups[r] || []).push(i); });
+  Object.values(groups).forEach(idxs => {
+    if (idxs.length < 2) return;
+    let cx = 0, cy = 0;
+    idxs.forEach(i => { cx += pts[i].x; cy += pts[i].y; });
+    cx /= idxs.length; cy /= idxs.length;
+    const R = Math.max(MIN / 2, (MIN * idxs.length) / (2 * Math.PI));
+    idxs.forEach((i, k) => {
+      const a = (2 * Math.PI * k) / idxs.length - Math.PI / 2;
+      const np = L.point(cx + R * Math.cos(a), cy + R * Math.sin(a));
+      markers[i].setLatLng(map.containerPointToLatLng(np));
+    });
+  });
+}
+
+function renderMap(route) {
+  const cssColor = getComputedStyle(document.documentElement).getPropertyValue(route.colorVar || `--r${route.id}`).trim();
+  const map = L.map('map' + route.id, { zoomControl: true, attributionControl: true, scrollWheelZoom: false });
+  // CARTO Voyager (retina via {r}) — bedre lesbarhet ved print enn OSM-standard,
+  // og innenfor tile-bruksvilkår (OSMs egne tile-servere er ikke ment for distribuerte produkter).
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    maxZoom: 19,
+    subdomains: 'abcd',
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · © <a href="https://carto.com/attributions">CARTO</a>'
+  }).addTo(map);
+
+  const latlngs = [];
+  const markers = [];
+  route.order.forEach((origNum, idx) => {
+    const p = points[origNum];
+    const localNum = idx + 1;
+    latlngs.push(p.coords);
+    const icon = L.divIcon({ className: '', html: `<div class="num-marker r${route.id}">${localNum}</div>`, iconSize: [26, 26], iconAnchor: [13, 13] });
+    const mk = L.marker(p.coords, { icon }).addTo(map)
+      .bindPopup(`<strong>${localNum} — ${p.title}</strong>${p.address ? `<br><span style="font-size:11px;color:#666">${p.address}</span>` : ''}`);
+    mk._base = p.coords;
+    markers.push(mk);
+  });
+  markerStore[route.id] = markers;
+
+  // Stiplet linje for rute
+  {
+    const wsegs = walkRoutes[String(route.id)] || [];
+    const totalPts = wsegs.reduce((a, s) => a + s.length, 0);
+    if (totalPts > 4) {
+      wsegs.forEach(seg => L.polyline(seg, { color: cssColor, weight: 1.5, opacity: 0.65, dashArray: '2,7' }).addTo(map));
+    } else if (latlngs.length > 1) {
+      L.polyline(latlngs, { color: cssColor, weight: 1.5, opacity: 0.75, dashArray: '3,4' }).addTo(map);
+    }
+  }
+
+  // Visning: center+zoom > bounds > auto-fit
+  if (route.center && route.zoom != null) {
+    map.setView(route.center, route.zoom);
+  } else if (route.bounds) {
+    map.fitBounds(route.bounds, { padding: [0, 0] });
+  } else {
+    const wsegs = walkRoutes[String(route.id)] || [];
+    const fitPts = wsegs.length > 0 ? wsegs.flat().concat(latlngs) : latlngs;
+    if (fitPts.length === 1) map.setView(fitPts[0], 17);
+    else map.fitBounds(L.latLngBounds(fitPts), { padding: [10, 10], maxZoom: 17 });
+  }
+
+  const doSpread = () => spreadMarkers(map, markers);
+  map.on('zoomend moveend', doSpread);
+  setTimeout(() => { map.invalidateSize(); doSpread(); }, 400);
+  return map;
+}
+
+// ===== INIT =====
+buildNav();
+buildCover();
+buildSheets();
+
+const maps = {};
+const markerStore = {};
+const mapBounds = {};
+routes.forEach(r => {
+  renderInfo(r);
+  maps[r.id] = renderMap(r);
+  if (r.center && r.zoom != null) mapBounds[r.id] = { type: 'view', center: r.center, zoom: r.zoom };
+  else if (r.bounds) mapBounds[r.id] = { type: 'bounds', bounds: L.latLngBounds(r.bounds) };
+  else {
+    const latlngs = r.order.map(n => points[n].coords);
+    const wsegs = walkRoutes[String(r.id)] || [];
+    const fitPts = wsegs.length > 0 ? wsegs.flat().concat(latlngs) : latlngs;
+    mapBounds[r.id] = fitPts.length > 1 ? { type: 'auto', bounds: L.latLngBounds(fitPts) } : null;
+  }
+});
+
+function refitMaps() {
+  Object.entries(maps).forEach(([id, m]) => {
+    m.invalidateSize();
+    const v = mapBounds[id];
+    if (!v) return;
+    if (v.type === 'view') m.setView(v.center, v.zoom);
+    else if (v.type === 'bounds') m.fitBounds(v.bounds, { padding: [0, 0] });
+    else m.fitBounds(v.bounds, { padding: [10, 10], maxZoom: 17 });
+    if (markerStore[id]) spreadMarkers(m, markerStore[id]);
+  });
+}
+window.addEventListener('beforeprint', refitMaps);
+window.addEventListener('afterprint', refitMaps);
+if (window.matchMedia) {
+  const mql = window.matchMedia('print');
+  if (mql.addEventListener) mql.addEventListener('change', refitMaps);
+  else if (mql.addListener) mql.addListener(refitMaps);
+}
+</script>
+
+</body>
+</html>

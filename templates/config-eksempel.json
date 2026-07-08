@@ -1,0 +1,45 @@
+{
+  "title": "Kulturløype – Eksempelby",
+  "subtitle": "Fire mindre runder du kan gå på 1-2 timer hver.",
+  "footer_source": "Kildetekster fra museet.",
+  "colors": ["#c0392b", "#2980b9", "#27ae60", "#d4a017"],
+  "extra_css": "",
+  "cover": {
+    "title": "Kulturløype – Eksempelby",
+    "lead": "Følg historien gjennom byen — fra gamlebyens kulturminner til den moderne sentrum.",
+    "legend": "<strong>Slik leser du arket:</strong> Hvert ark har et kart øverst med løypa tegnet inn, og infotekstene under. Numrene 1, 2, 3 … viser rekkefølgen i løypa.",
+    "sourceCredit": "© Eksempelby museum",
+    "colophon": "<strong>Kilder og lisenser</strong><br>Kartdata © OpenStreetMap-bidragsytere (ODbL) · karttegning © CARTO.<br>Koordinater og vernedata: Riksantikvaren / Kulturminnesøk.<br>Stedstekstene er bearbeidet av Eksempelby museum på grunnlag av Wikipedia (CC BY-SA 4.0) og lokale kilder. Foto: se den enkelte bildetekst.<br>© Eksempelby kommune 2026."
+  },
+  "points": {
+    "1": {
+      "title": "Rådhuset",
+      "address": "Storgata 1",
+      "coords": [70.0750, 29.7500],
+      "text": "Bygget i 1950-åra etter krigsødeleggelser. Arkitekt: NN.",
+      "source": "Eksempelby museum",
+      "photo_credit": "Ola Nordmann / Eksempelby kommune"
+    },
+    "2": {
+      "title": "Gamle skolen",
+      "coords": [70.0760, 29.7510],
+      "text": "En av de eldste bygningene i byen, fra 1880-tallet.",
+      "source": "Bearbeidet fra Wikipedia (CC BY-SA 4.0)"
+    }
+  },
+  "routes": [
+    {
+      "id": 1,
+      "name": "Sentrum",
+      "meta": "2 punkter · ca. 0,5 km · 30 min<br>Start: Rådhuset · Slutt: Gamle skolen",
+      "intro": "Sentrum av byen med to viktige bygninger fra ulike epoker.",
+      "coverDescription": "Rådhuset og gamle skolen.",
+      "coverStats": "2 punkter · 0,5 km",
+      "order": [1, 2],
+      "notes": {}
+    }
+  ],
+  "walkRoutes": {
+    "1": []
+  }
+}
