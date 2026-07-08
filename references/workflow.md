@@ -1,4 +1,4 @@
-# Detaljert workflow for kulturløype-skillen
+# Detaljert workflow for byvandring-skillen
 
 Dette dokumentet er agentens "kjøkkenoppskrift" — gå gjennom det steg for steg første gang du bruker skillen.
 
@@ -133,7 +133,7 @@ Hvis (b): generer KML for løype 3 (kun de problematiske segmentene), be brukere
 Hvis brukeren vil overstyre flaggede segmenter:
 
 ```bash
-python3 scripts/generate_kml.py --route 3 --config arbeid/loyper.json --output outputs/Vadsø\ Kulturløype\ 3.kml
+python3 scripts/generate_kml.py --route 3 --config arbeid/loyper.json --output outputs/Vadsø\ Byvandring\ 3.kml
 ```
 
 Send brukeren instruksjoner:
@@ -141,7 +141,7 @@ Send brukeren instruksjoner:
 ```
 1. Åpne mymaps.google.com
 2. Trykk "Opprett et nytt kart"
-3. Trykk "Importer" og last opp Vadsø Kulturløype 3.kml
+3. Trykk "Importer" og last opp Vadsø Byvandring 3.kml
 4. Klikk på rute-linjen og dra punkter for å justere
 5. Tre prikker → "Last ned KML" → lagre i samme mappe
 6. Si fra når du har gjort det, så importerer jeg den nye ruten.
@@ -150,7 +150,7 @@ Send brukeren instruksjoner:
 Når brukeren har eksportert tilbake:
 
 ```bash
-python3 scripts/parse_kml.py outputs/Vadsø\ Kulturløype\ 3.kml --output arbeid/loype3_oppdatert.json --split-segments
+python3 scripts/parse_kml.py outputs/Vadsø\ Byvandring\ 3.kml --output arbeid/loype3_oppdatert.json --split-segments
 ```
 
 Erstatt `walkRoutes["3"]` i `arbeid/walk_routes.json` med segmentene fra `arbeid/loype3_oppdatert.json`.
@@ -218,8 +218,8 @@ Lag en final config med alt:
 ```bash
 python3 scripts/build_html.py \
   --config arbeid/config-final.json \
-  --template templates/kulturloype-template.html \
-  --output outputs/kulturloype-vadso.html
+  --template templates/byvandring-template.html \
+  --output outputs/byvandring-vadso.html
 ```
 
 ---
@@ -227,12 +227,12 @@ python3 scripts/build_html.py \
 ## Steg 8: Visuell verifikasjon
 
 ```bash
-python3 scripts/verify_screenshot.py outputs/kulturloype-vadso.html &
+python3 scripts/verify_screenshot.py outputs/byvandring-vadso.html &
 ```
 
 Bruk så Chrome MCP til å:
 
-1. Naviger til `http://localhost:8765/kulturloype-vadso.html#rute1`
+1. Naviger til `http://localhost:8765/byvandring-vadso.html#rute1`
 2. Vent 4 sek
 3. Ta screenshot
 4. Verifiser:
@@ -258,11 +258,11 @@ Oppdater `arbeid/config-final.json` og rebuild.
 
 ```bash
 # Kopier alt til workspace
-cp -r outputs/* "/path/to/workspace/06 - Kulturløype/"
+cp -r outputs/* "/path/to/workspace/06 - Byvandring/"
 ```
 
 Gi brukeren:
-- En `computer://`-lenke til `kulturloype-{kommune}.html`
+- En `computer://`-lenke til `byvandring-{kommune}.html`
 - En kort guide for hvordan oppdatere senere (rediger KML i My Maps, kjør `parse_kml.py`)
 
 ---

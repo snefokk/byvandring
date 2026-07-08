@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Bygg en kulturløype-HTML fra config + template.
+"""Bygg en byvandring-HTML fra config + template.
 
 Brukseksempel:
     python3 build_html.py \\
         --config arbeid/config.json \\
-        --template templates/kulturloype-template.html \\
-        --output outputs/kulturloype-vadso.html
+        --template templates/byvandring-template.html \\
+        --output outputs/byvandring-vadso.html
 
 Config-struktur (config.json):
 {
@@ -77,12 +77,12 @@ def render_template(template: str, config: dict) -> str:
 
     cover = config.get("cover", {})
     if "title" not in cover:
-        cover["title"] = config.get("title", "Kulturløype")
+        cover["title"] = config.get("title", "Byvandring")
     if "lead" not in cover:
         cover["lead"] = config.get("subtitle", "")
 
     replacements = {
-        "{{TITLE}}": config.get("title", "Kulturløype"),
+        "{{TITLE}}": config.get("title", "Byvandring"),
         "{{SUBTITLE}}": config.get("subtitle", ""),
         "{{FOOTER_SOURCE}}": config.get("footer_source", ""),
         "{{COLOR_1}}": colors[0],
@@ -104,9 +104,9 @@ def render_template(template: str, config: dict) -> str:
 
 
 def main():
-    p = argparse.ArgumentParser(description="Bygg kulturløype-HTML fra config + template")
+    p = argparse.ArgumentParser(description="Bygg byvandring-HTML fra config + template")
     p.add_argument("--config", required=True, help="Path til config.json")
-    p.add_argument("--template", required=True, help="Path til kulturloype-template.html")
+    p.add_argument("--template", required=True, help="Path til byvandring-template.html")
     p.add_argument("--output", required=True, help="Path til output HTML")
     args = p.parse_args()
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Mapp opplastede bilder fra brukeren til riktige kulturløype-punkter.
+"""Mapp opplastede bilder fra brukeren til riktige byvandring-punkter.
 
 Brukeren har lastet opp en mappe med bilder. Filnavnene kan være:
 - "bietilaegarden.jpg"            → matches på tittel
@@ -124,7 +124,7 @@ def copy_with_naming(image_path: Path, point_id: str, point: dict, output_dir: P
 
 
 def main():
-    p = argparse.ArgumentParser(description="Match opplastede bilder mot kulturløype-punkter")
+    p = argparse.ArgumentParser(description="Match opplastede bilder mot byvandring-punkter")
     p.add_argument("--config", required=True, help="loyper.json med points")
     p.add_argument("--input", required=True, help="Mappe med opplastede bilder")
     p.add_argument("--output-dir", default="outputs/bilder", help="Mappe der bildene skal lagres")

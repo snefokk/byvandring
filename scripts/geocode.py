@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Geokoding for kulturløyper — slå opp koordinater fra Wikipedia + Nominatim.
+"""Geokoding for byvandringer — slå opp koordinater fra Wikipedia + Nominatim.
 
 Brukseksempel:
     python3 geocode.py --kommune Vadsø --punkter arbeid/punkter-utkast.json
@@ -23,7 +23,7 @@ from pathlib import Path
 from _wikicoords import extract_kulturminner
 
 
-USER_AGENT = "Kulturloype-skill/1.0 (https://github.com/snefokk/kulturloype)"
+USER_AGENT = "Byvandring-skill/1.0 (https://github.com/snefokk/byvandring)"
 
 
 def fetch(url: str, timeout: int = 10) -> str:
@@ -92,7 +92,7 @@ def lookup_coords(name: str, kommune: str, wiki_index: dict) -> tuple:
 
 
 def main():
-    p = argparse.ArgumentParser(description="Geokoding for kulturløyper")
+    p = argparse.ArgumentParser(description="Geokoding for byvandringer")
     p.add_argument("--kommune", required=True, help="Kommunenavn (f.eks. Vadsø)")
     p.add_argument("--punkter", required=True, help="JSON med punkter")
     p.add_argument("--output", help="Output JSON (default: overskrive input)")

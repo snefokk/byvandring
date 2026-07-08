@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Automatisk fotgjenger-routing for kulturløyper via FOSSGIS OSM-routing.
+"""Automatisk fotgjenger-routing for byvandringer via FOSSGIS OSM-routing.
 
 Brukseksempel:
     python3 auto_route.py --config arbeid/loyper.json --output arbeid/walk_routes.json
@@ -40,7 +40,7 @@ from pathlib import Path
 
 
 OSRM_URL = "https://routing.openstreetmap.de/routed-foot/route/v1/foot/{lon1},{lat1};{lon2},{lat2}?overview=full&geometries=geojson"
-USER_AGENT = "Kulturloype-skill/1.0"
+USER_AGENT = "Byvandring-skill/1.0"
 
 
 def _http_get(url: str, timeout: int):
@@ -149,7 +149,7 @@ def auto_route_for_loype(points: dict, order: list, route_id: int):
 
 
 def main():
-    p = argparse.ArgumentParser(description="Auto-routing for kulturløyper")
+    p = argparse.ArgumentParser(description="Auto-routing for byvandringer")
     p.add_argument("--config", required=True, help="JSON med points + routes")
     p.add_argument("--output", required=True, help="walk_routes.json")
     p.add_argument("--report", help="Kvalitetsrapport som JSON")

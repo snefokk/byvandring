@@ -34,7 +34,7 @@ from html import unescape
 from pathlib import Path
 
 
-USER_AGENT = "Kulturloype-skill/1.0"
+USER_AGENT = "Byvandring-skill/1.0"
 
 # Per-kommune museumsider å sjekke
 LOCAL_MUSEUM_HOSTS = {

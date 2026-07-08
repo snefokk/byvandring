@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Samle kandidatpunkter for en kulturløype fra flere kilder.
+"""Samle kandidatpunkter for en byvandring fra flere kilder.
 
 For å unngå å bare bruke Riksantikvarens kulturminneregister (som ofte mangler
 moderne attraksjoner som monumenter, museer, kvensk arkitektur), slår dette
@@ -28,7 +28,7 @@ from pathlib import Path
 from _wikicoords import extract_kulturminner
 
 
-USER_AGENT = "Kulturloype-skill/1.0"
+USER_AGENT = "Byvandring-skill/1.0"
 
 # Kjente lokale museum-sider per kommune
 LOCAL_MUSEUM_LISTS = {

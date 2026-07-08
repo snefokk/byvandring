@@ -1,11 +1,11 @@
 {
-  "title": "Kulturløype – Eksempelby",
+  "title": "Byvandring – Eksempelby",
   "subtitle": "Fire mindre runder du kan gå på 1-2 timer hver.",
   "footer_source": "Kildetekster fra museet.",
   "colors": ["#c0392b", "#2980b9", "#27ae60", "#d4a017"],
   "extra_css": "",
   "cover": {
-    "title": "Kulturløype – Eksempelby",
+    "title": "Byvandring – Eksempelby",
     "lead": "Følg historien gjennom byen — fra gamlebyens kulturminner til den moderne sentrum.",
     "legend": "<strong>Slik leser du arket:</strong> Hvert ark har et kart øverst med løypa tegnet inn, og infotekstene under. Numrene 1, 2, 3 … viser rekkefølgen i løypa.",
     "sourceCredit": "© Eksempelby museum",

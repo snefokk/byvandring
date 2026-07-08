@@ -1,9 +1,9 @@
-# kulturloype
+# byvandring
 
-Lag en printbar **A4 kulturløype / byvandring** for et norsk tettsted — historiske løyper eller tematiske runder, klare til print, med interaktiv web-versjon. En åpen skill for Claude (Cowork / Claude Code).
+Lag en printbar **A4 byvandring** for et norsk tettsted — historiske løyper eller tematiske runder, klare til print, med interaktiv web-versjon. En åpen skill for Claude (Cowork / Claude Code).
 
 > **Vil du heller at vi lager løypa for deg?**
-> Ta kontakt med Snefokk via **[snefokk.com/kart](https://snefokk.com/kart)** — så bygger vi løypa, tilpasser profilen og leverer print-klar HTML. Dette repoet er for deg som vil gjøre jobben selv, gratis.
+> Ta kontakt med Snefokk via **[snefokk.com/byvandring](https://snefokk.com/byvandring)** — så bygger vi løypa, tilpasser profilen og leverer print-klar HTML. Dette repoet er for deg som vil gjøre jobben selv, gratis.
 
 ## Hva skillen lager
 
@@ -27,7 +27,7 @@ Koordinater og tekst hentes automatisk fra Riksantikvarens kulturminneregister, 
 
 | Gjør det selv (dette repoet) | La Snefokk gjøre jobben |
 | --- | --- |
-| Gratis — krever et Claude-abonnement | Ta kontakt på **[snefokk.com/kart](https://snefokk.com/kart)** |
+| Gratis — krever et Claude-abonnement | Ta kontakt på **[snefokk.com/byvandring](https://snefokk.com/byvandring)** |
 | Du kjører skillen selv i Claude — bygg og oppdater så ofte du vil | Snefokk bygger, tilpasser profilen og leverer, med én tilbakemeldingsrunde |
 | **Ferdig på under en time** (med god internettforbindelse) | **Klart innen typisk en uke** |
 
@@ -54,8 +54,8 @@ Skillen produserer en `config.json` og bygger HTML-en med et lite Python-skript 
 ```bash
 python3 scripts/build_html.py \
   --config arbeid/config-final.json \
-  --template templates/kulturloype-template.html \
-  --output outputs/kulturloype-<kommune>.html
+  --template templates/byvandring-template.html \
+  --output outputs/byvandring-<kommune>.html
 ```
 
 Se hvilke tema som finnes, og hent kandidatpunkter for ett av dem:

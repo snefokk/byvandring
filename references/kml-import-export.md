@@ -58,7 +58,7 @@ Lever filen til brukeren med instruksjoner:
 Når brukeren har eksportert oppdatert KML, kjør:
 
 ```bash
-python3 scripts/parse_kml.py "Vadsø Kulturløype 3.kml" --output arbeid/loype3.json --split-segments
+python3 scripts/parse_kml.py "Vadsø Byvandring 3.kml" --output arbeid/loype3.json --split-segments
 ```
 
 `--split-segments` deler den lange LineString-en i N-1 segmenter mellom de N markørene. Det er det formatet `walkRoutes` i HTML-templaten forventer.
@@ -67,7 +67,7 @@ Resultatet ser slik ut:
 
 ```json
 {
-  "name": "Vadsø Kulturløype 3",
+  "name": "Vadsø Byvandring 3",
   "points": [
     { "name": "Inngang", "lat": 70.0675, "lon": 29.7497 },
     { "name": "Russekirkegården", "lat": 70.0668, "lon": 29.7510 },

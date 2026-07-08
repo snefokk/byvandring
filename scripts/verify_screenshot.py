@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Visuell verifikasjon av kulturløype-HTML via screenshot.
+"""Visuell verifikasjon av byvandring-HTML via screenshot.
 
 Skillen bruker dette for å sjekke at hver løypes kart faktisk viser:
 - Alle markørene innenfor viewport
@@ -7,7 +7,7 @@ Skillen bruker dette for å sjekke at hver løypes kart faktisk viser:
 - Ruten ikke utenfor kart-kanten
 
 Brukseksempel:
-    python3 verify_screenshot.py outputs/kulturloype-vadso.html
+    python3 verify_screenshot.py outputs/byvandring-vadso.html
 
 Forutsetninger:
 - Chrome MCP må være tilkoblet (Claude in Chrome)
@@ -59,7 +59,7 @@ def main():
 
     print(f"""
 ══════════════════════════════════════════════════════════════
- VERIFIKASJON AV KULTURLØYPE
+ VERIFIKASJON AV BYVANDRING
 ══════════════════════════════════════════════════════════════
 
 HTML-fil: {html_path}

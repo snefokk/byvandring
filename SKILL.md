@@ -1,9 +1,9 @@
 ---
-name: kulturloype
+name: byvandring
 description: Lag interaktive og printbare by-løyper for en norsk by — historiske kulturløyper *eller* tematiske runder (mat, uteliv/bar, shopping, natur, gatekunst, eller kuraterte tema som «Munch-løypa» og «Harry Hole-løypa»). Skillen foreslår hva stedet er kjent for, lar brukeren velge tema, henter kandidatpunkter (Riksantikvarens register for historie, OpenStreetMap for mat/uteliv/shopping/natur, eller en manuell/kuratert liste), beregner gå-ruter automatisk, og leverer en HTML-fil der hver løype printes som A4. Bruk når brukeren sier "lag kulturløype", "byvandring", "historisk vandring", "lag en POI-tur", "tema-løype", "smaksrunde", "bar-runde", "shopping-løype", "gatekunst-vandring", "kirkevandring", "spøkelsesvandring", "Munch-løype", "Harry Hole-løype", eller har et eksisterende hefte/liste de vil digitalisere.
 ---
 
-# Kulturløype-skillen
+# Byvandring-skillen
 
 Bygger interaktive og printbare by-løyper for norske byer — til fots. Løypene kan være **historiske** (kulturminner) eller **tematiske** (mat, uteliv, shopping, natur, gatekunst, eller kuraterte tema som «Munch-løypa»). Samme sted kan tilbys med flere tema. Skillen er for **bygjenger** i bymiljø — ikke fjell/natur-turer.
 
@@ -405,8 +405,8 @@ sammen med `title`, `subtitle`, `cover`, `colors` osv. (se
 ```bash
 python3 scripts/build_html.py \
   --config arbeid/config-final.json \
-  --template templates/kulturloype-template.html \
-  --output outputs/kulturloype-vadso.html
+  --template templates/byvandring-template.html \
+  --output outputs/byvandring-vadso.html
 ```
 
 Templatet inneholder placeholders som `{{TITLE}}`, `{{ROUTES_JSON}}`, `{{POINTS_JSON}}`, `{{WALK_ROUTES_JSON}}` osv. Bygge-scriptet erstatter disse med faktiske data.
@@ -422,7 +422,7 @@ notatet etter det 9. stoppet.
 Kjør `scripts/verify_screenshot.py`:
 
 ```bash
-python3 scripts/verify_screenshot.py outputs/kulturloype-vadso.html
+python3 scripts/verify_screenshot.py outputs/byvandring-vadso.html
 ```
 
 > **Hva scriptet faktisk gjør:** det starter en lokal `http.server` i HTML-fila
@@ -456,9 +456,9 @@ Markørene skal være rene fargede sirkler med hvit kant — ingen grå firkante
 ## Trinn 12: Lever
 
 Endelig output:
-- `outputs/kulturloype-<kommune>.html` — hovedfil
+- `outputs/byvandring-<kommune>.html` — hovedfil
 - `outputs/bilder/` — alle bilder
-- `outputs/<Kommune> Kulturløype <N>.kml` — original KML-er for hver løype (så brukeren kan oppdatere senere)
+- `outputs/<Kommune> Byvandring <N>.kml` — original KML-er for hver løype (så brukeren kan oppdatere senere)
 
 Gi brukeren en `computer://`-lenke til HTML-fila + en kort guide:
 - Hvordan printe (Cmd+P → "Behold bakgrunnsfarger" → A4 portrait)
@@ -467,10 +467,10 @@ Gi brukeren en `computer://`-lenke til HTML-fila + en kort guide:
 ## Filer og scripts i skillen
 
 ```
-kulturloype/
+byvandring/
 ├── SKILL.md                          (denne fila)
 ├── templates/
-│   └── kulturloype-template.html     (HTML med placeholders)
+│   └── byvandring-template.html      (HTML med placeholders)
 ├── scripts/
 │   ├── _wikicoords.py                (delt parser for Wikipedia kulturminneliste)
 │   ├── extract_from_pdf.py           (PDF → punkter)

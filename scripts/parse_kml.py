@@ -2,11 +2,11 @@
 """Parse en Google My Maps KML-fil og hent ut markører + ruter.
 
 Brukseksempel:
-    python3 parse_kml.py "Vadsø by Kulturløype 2.kml" --output arbeid/loype2.json
+    python3 parse_kml.py "Vadsø by Byvandring 2.kml" --output arbeid/loype2.json
 
 Utskrift (JSON):
 {
-  "name": "Vadsø by Kulturløype 2",
+  "name": "Vadsø by Byvandring 2",
   "points": [
     { "name": "Hermetikkfabrikken", "lat": 70.0734, "lon": 29.7473 },
     ...

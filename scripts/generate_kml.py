@@ -2,7 +2,7 @@
 """Generer en start-KML for Google My Maps.
 
 Brukseksempel:
-    python3 generate_kml.py --route 3 --config arbeid/loyper.json --output outputs/Vadso\\ Kulturloype\\ 3.kml
+    python3 generate_kml.py --route 3 --config arbeid/loyper.json --output outputs/Vadso\\ Byvandring\\ 3.kml
 
 Lager en KML-fil med:
 - Markører for hvert punkt i løypa (i rekkefølge)
@@ -57,7 +57,7 @@ LINE_TEMPLATE = """    <Placemark>
 def generate_kml(route: dict, points: dict, walk_segments: list = None,
                  map_name: str = None) -> str:
     """Bygg KML-streng."""
-    map_name = map_name or f"Kulturløype {route['id']} – {route.get('name', '')}"
+    map_name = map_name or f"Byvandring {route['id']} – {route.get('name', '')}"
 
     placemarks = []
     for i, pid in enumerate(route["order"], start=1):
@@ -93,7 +93,7 @@ def main():
     p.add_argument("--config", required=True, help="loyper.json med points + routes")
     p.add_argument("--walk-routes", help="walk_routes.json med rute-geometri (valgfri)")
     p.add_argument("--output", required=True, help="Output KML-fil")
-    p.add_argument("--name", help="Tittel på kartet (default: 'Kulturløype N – Navn')")
+    p.add_argument("--name", help="Tittel på kartet (default: 'Byvandring N – Navn')")
     args = p.parse_args()
 
     config = json.loads(Path(args.config).read_text(encoding="utf-8"))
