@@ -1,101 +1,78 @@
 # kulturloype
 
-En Claude Code-skill som lager **interaktive og printbare by-løyper** (A4) for norske
-byer — historiske kulturløyper *eller* tematiske runder. Den foreslår hva stedet er
-kjent for, lar deg velge tema, henter punkter, beregner faktiske gå-ruter og bygger en
-selvstendig HTML-fil klar til print.
+Lag en printbar **A4 kulturløype / byvandring** for et norsk tettsted — historiske løyper eller tematiske runder, klare til print, med interaktiv web-versjon. En åpen skill for Claude (Cowork / Claude Code).
 
-> Full arbeidsflyt for agenten ligger i [`SKILL.md`](SKILL.md). Denne README-en er en
-> menneske-vennlig oversikt.
+> **Vil du heller at vi lager løypa for deg?**
+> Ta kontakt med Snefokk via **[snefokk.com/kart](https://snefokk.com/kart)** — så bygger vi løypa, tilpasser profilen og leverer print-klar HTML. Dette repoet er for deg som vil gjøre jobben selv, gratis.
 
-## Hva den lager
+## Hva skillen lager
 
-- **Forside** med oversikt over alle løypene
-- **Ett A4-ark per løype**: kart øverst (CARTO Voyager), infotekst i to kolonner under
-- **Faktiske gå-ruter** mellom punktene (OSM/FOSSGIS foot-routing — ikke luftlinje)
-- **Kildekreditering** innebygd: kolofon på forsiden + «Kilde:»-linje per punkt + fotokreditt
-- **Automatisk markør-spredning** så tette punkter ikke overlapper
-- Klikkbare bilder (thumbnails i web, skjult ved print)
+- **A4-ark klart til print** — én side per løype, kart øverst og infotekst under, print på en helt vanlig kontorprinter
+- **Flere løyper i samme hefte** — del byen i mindre runder (geografisk, gate-vis eller tematisk)
+- **Faktiske gå-ruter** mellom punktene — ekte fotgjenger-ruter fra OpenStreetMap, ikke luftlinje
+- **Tema du velger** — historie/kulturminner, arkitektur, religion, maritim, uteliv, shopping, natur, smaksrunde, gatekunst — eller kuraterte tema som «Munch-løypa» eller «Harry Hole-løypa»
+- **Kildekreditering innebygd** — kolofon på forsiden + «Kilde:»-linje per punkt + fotokreditt
+- **Interaktiv web-versjon** — klikkbare markører og bilder; markørene sprer seg automatisk så tette punkter ikke overlapper
 
-## Tema-løyper
+Koordinater og tekst hentes automatisk fra Riksantikvarens kulturminneregister, OpenStreetMap og Wikipedia under byggingen.
 
-Én løype = ett tema. Datadrevne tema hentes fra OpenStreetMap / Riksantikvaren:
+## Hvem det er for
 
-| Tema | Kilde | Egnet for |
-|---|---|---|
-| `kultur` | Riksantikvaren + OSM + museum | historiske byer (standard) |
-| `arkitektur` | Riksantikvaren + OSM | trehusbyer, severdigheter |
-| `religion` | OSM `place_of_worship` | kirker, kapell, synagoger |
-| `maritime` | OSM fyr/brygge/marina | kystbyer, sjøfart |
-| `uteliv` | OSM bar/pub | bar-crawl |
-| `shopping` | OSM `shop` | butikkrunder |
-| `natur` | OSM utsikt/park | utsiktspunkter |
-| `smaksrunde` | OSM bakeri/iskrem/gatemat | smått å smake (ikke middagsguide) |
-| `gatekunst` | OSM `artwork` | ofte kuratert |
+- Kommuner, turistkontor og besøkssentre som vil ha lavterskel byvandringer
+- Museer og historielag som vil digitalisere en kulturløype eller et gammelt hefte
+- Næringsforeninger og reiselivsorganisasjoner
+- Festivaler og lokale aktører med et tema å formidle (gatekunst, forfattere, sjøfart …)
 
-**Kuraterte tema** (manuell punktliste): «Munch-løypa», «Harry Hole-løypa»,
-spøkelsesvandring, festival-gatekunst, kvensk/samisk innvandringshistorie, industri.
+## To måter å få løypa
+
+| Gjør det selv (dette repoet) | La Snefokk gjøre jobben |
+| --- | --- |
+| Gratis — krever et Claude-abonnement | Ta kontakt på **[snefokk.com/kart](https://snefokk.com/kart)** |
+| Du kjører skillen selv i Claude — bygg og oppdater så ofte du vil | Snefokk bygger, tilpasser profilen og leverer, med én tilbakemeldingsrunde |
+| **Ferdig på under en time** (med god internettforbindelse) | **Klart innen typisk en uke** |
+
+## Hva du trenger (for å gjøre det selv)
+
+- Et aktivt **Claude Pro**-abonnement (eller høyere) — skillen kjører i Claude Cowork / Claude Code
+- **Python 3** — for å bygge HTML-en (kun standardbibliotek, ingen `pip install`; finnes på de fleste maskiner)
+- **curl** — brukes som fallback for gå-ruter (finnes på macOS/Linux som standard)
+- **Internett-tilgang** — kart, routing, Wikipedia, Riksantikvaren/OSM
+- *Valgfritt:* **pdftotext** (poppler) — kun hvis du digitaliserer et eksisterende PDF-hefte
+
+Skillen i seg selv er gratis og åpen kildekode.
+
+## Kom i gang (gjør det selv)
+
+1. **Last ned skillen** — klon eller last ned dette repoet.
+2. **Installer i Claude** — pek Cowork/Claude Code mot skill-mappa (`~/.claude/skills/`).
+3. **Følg `SKILL.md`** — den tar deg steg for steg: velg tema, hent punkter, godkjenn ruter og bygg.
+
+## Bygg fra en konfig-fil (avansert)
+
+Skillen produserer en `config.json` og bygger HTML-en med et lite Python-skript (kun standardbibliotek — ingen `pip install`):
 
 ```bash
-python3 scripts/candidate_pool.py --list-temaer   # se alle tema
+python3 scripts/build_html.py \
+  --config arbeid/config-final.json \
+  --template templates/kulturloype-template.html \
+  --output outputs/kulturloype-<kommune>.html
 ```
 
-## Kom i gang
-
-Skillen kjøres normalt av Claude Code (si f.eks. *«lag en kirkevandring i Trondheim»*),
-men scriptene kan også kjøres manuelt:
+Se hvilke tema som finnes, og hent kandidatpunkter for ett av dem:
 
 ```bash
-# 1. Hent kandidatpunkter for et tema
+python3 scripts/candidate_pool.py --list-temaer
 python3 scripts/candidate_pool.py --kommune Trondheim --tema religion \
   --bbox "63.41,10.36,63.44,10.42" --output arbeid/kandidater.json
-
-# 2. (Historiske tema) fyll inn koordinater / sjekk tekstkilder
-python3 scripts/geocode.py --kommune Trondheim --punkter arbeid/kandidater.json
-python3 scripts/source_lookup.py --punkter arbeid/kandidater.json --kommune Trondheim
-
-# 3. Beregn gå-ruter
-python3 scripts/auto_route.py --config arbeid/loyper.json --output arbeid/walk.json
-
-# 4. Bygg HTML fra én samlet config (se templates/config-eksempel.json)
-python3 scripts/build_html.py --config arbeid/config-final.json \
-  --template templates/kulturloype-template.html --output outputs/kulturloype.html
 ```
 
-## Byggekjede
+## Eksempler
 
-```
-config.json ──► build_html.py ──► kulturloype-template.html ──► ferdig .html
-```
+Løyper bygget med skillen:
 
-Se [`templates/config-eksempel.json`](templates/config-eksempel.json) for full datastruktur
-(tittel, farger, cover/kolofon, points, routes, walkRoutes).
+- **Vadsø** — historisk kulturløype, 5 løyper / 31 punkter (basert på kommunens gamle hefte)
+- **Røros** — Bergstaden i 3 gate-vise løyper / 18 punkter (bygget «fra scratch»)
 
-## Forutsetninger
+## Lisens
 
-- **Python 3** (kun standardbibliotek — ingen `pip install`)
-- **curl** — brukes som TLS-fallback for gå-routing (finnes på macOS som standard)
-- **pdftotext** (poppler) — *kun* hvis du importerer et eksisterende PDF-hefte
-- Nettilgang — OSM/CARTO-kart, FOSSGIS-routing, Wikipedia, Nominatim/Overpass
-
-## Mappestruktur
-
-```
-kulturloype/
-├── SKILL.md                        full arbeidsflyt (agent-instruks)
-├── README.md                       denne fila
-├── scripts/                        Python-scripts (byggekjede + datakilder)
-├── templates/                      HTML-template + eksempel-config
-└── references/                     workflow, tekstkilder, koordinatkilder, KML-flyt
-```
-
-## Kildekreditering og lisens
-
-Standard arbeidsmåte: **skriv tekstene om til egne ord (behold fakta), og oppgi alltid
-kilden.** Wikipedia er CC BY-SA (ordrett gjenbruk krever ShareAlike — unngås ved
-omskriving); museumstekst er som regel opphavsrettslig vernet; kartdata krever
-attribusjon (OSM/CARTO) i kolofonen. Se `references/text-sources.md`.
-
----
-
-Laget av **Snefokk**. Kartdata © OpenStreetMap-bidragsytere (ODbL) · karttegning © CARTO.
+Se [LICENSE](LICENSE). MIT — åpen kildekode, bruk, modifiser og del fritt.
