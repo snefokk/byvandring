@@ -439,6 +439,15 @@ Agentens jobb, per løype (`#rute1`, `#rute2`, … + forsiden `#cover`):
 3. Hvis problem: juster `center+zoom` eller `bounds` for løypa i `config-final.json`, bygg på nytt, ta nytt screenshot. Gjenta til OK eller maks ~3 forsøk.
 4. Lever screenshots til brukeren for sluttgodkjenning.
 
+**Sjekk også en ekte PDF, ikke bare skjermbildet.** Noen markør-feil (fargeløse markører, mørke firkanter rundt tallene) dukker *bare* opp i selve PDF-rasteriseringen — se «Vanlige feilsituasjoner». Generer én PDF og se på en kart-side før levering:
+```bash
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new --disable-gpu \
+  --no-pdf-header-footer --print-to-pdf=/tmp/kul-test.pdf \
+  http://localhost:8765/<fil>.html --virtual-time-budget=8000
+pdftoppm -png -r 150 -f 2 -l 2 /tmp/kul-test.pdf /tmp/kulpage   # side 2 = første løype
+```
+Markørene skal være rene fargede sirkler med hvit kant — ingen grå firkanter, ingen fargeløse badges.
+
 **Visningsmoduser per løype** (samme datastruktur som vi sluttet med i Vadsø):
 - `bounds: [[s, w], [n, e]]` — for løyper med store områder
 - `center: [lat, lon], zoom: 15` — for ett-punkts-løyper med kontekst
@@ -492,6 +501,11 @@ kulturloype/
 **To markører overlapper** → Håndteres nå automatisk: templaten har `spreadMarkers()` som vifter ut markører som ligger nærmere enn 30 px fra hverandre (i en liten sirkel rundt felles tyngdepunkt), og kjører på nytt ved zoom/print. Rute-linjen røres ikke. Bare hvis to punkter har *helt* like koordinater og du vil ha dem på ekte plass, juster koordinatene manuelt.
 
 **A4-print får tekst som flyter til neste side** → Reduser font-størrelse i `@media print` eller del løypa i to.
+
+**Nummer-markørene mister farge / får mørk firkant i PDF** → To separate Chrome-print-feil på samme divIcon-markør, begge løst i malen (`@media print`):
+- *Fargeløse markører*: nettleseren dropper `background`-farger ved «Lagre som PDF». Kreves `-webkit-print-color-adjust: exact; print-color-adjust: exact;` på `html, body` (kantlinjer printes uansett, bakgrunner ikke).
+- *Mørk grå firkant rundt markøren*: `box-shadow` rendres som en hard firkant (følger ikke `border-radius`) i PDF. Sett `.num-marker { box-shadow: none !important; }` i `@media print` — den hvite 2px-kanten gir nok kontrast.
+Verifiser alltid en **ekte PDF**, ikke bare skjerm/print-emulering — begge feilene dukker bare opp i selve PDF-rasteriseringen. Rask sjekk: `chrome --headless=new --print-to-pdf` mot en lokalt servert kopi, så `pdftoppm -png` på en kart-side.
 
 ## Snefokk-defaults
 

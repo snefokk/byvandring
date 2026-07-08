@@ -22,7 +22,10 @@
     --bg: #f4f1ea;
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: var(--ink); background: var(--bg); line-height: 1.45; }
+  html, body { margin: 0; padding: 0; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; color: var(--ink); background: var(--bg); line-height: 1.45;
+    /* Ta med bakgrunnsfarger ved print/PDF — ellers blir de fargede markørene
+       og nummer-merkene fargeløse (bakgrunnsfarger droppes ved PDF-lagring). */
+    -webkit-print-color-adjust: exact; print-color-adjust: exact; }
   .top { background: #fff; padding: 24px 32px; border-bottom: 4px solid #222; }
   .top h1 { margin: 0 0 4px 0; font-size: 28px; letter-spacing: 0.5px; }
   .top .subtitle { color: var(--muted); font-size: 15px; }
@@ -86,6 +89,8 @@
     .info .pt { margin-bottom: 2mm; }
     .info .pt h3 { font-size: 9pt; margin-bottom: 0.5mm; }
     .leaflet-control-container { display: none; }
+    /* box-shadow rendres som en hard grå firkant i PDF (følger ikke border-radius) — dropp den ved print; den hvite 2px-kanten gir nok kontrast mot kartet */
+    .num-marker { box-shadow: none !important; }
   }
 
   .toolbar { background: #fff; padding: 10px 24px; border-bottom: 1px solid #ddd; font-size: 13px; color: #555; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }
