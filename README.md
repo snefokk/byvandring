@@ -3,7 +3,7 @@
 Lag en printbar **A4 byvandring** for et norsk tettsted — historiske løyper eller tematiske runder, klare til print, med interaktiv web-versjon. En åpen skill for Claude (Cowork / Claude Code).
 
 > **Vil du heller at vi lager løypa for deg?**
-> Ta kontakt med Snefokk via **[snefokk.com/byvandring](https://snefokk.com/byvandring)** — så bygger vi løypa, tilpasser profilen og leverer print-klar HTML. Dette repoet er for deg som vil gjøre jobben selv, gratis.
+> Bestill en ferdig byvandring på **[snefokk.com/byvandring](https://snefokk.com/byvandring)** — så bygger Snefokk løypa, tilpasser profilen og leverer print-klar HTML + web-versjon. Dette repoet er for deg som vil gjøre jobben selv, gratis.
 
 ## Hva skillen lager
 
@@ -27,7 +27,7 @@ Koordinater og tekst hentes automatisk fra Riksantikvarens kulturminneregister, 
 
 | Gjør det selv (dette repoet) | La Snefokk gjøre jobben |
 | --- | --- |
-| Gratis — krever et Claude-abonnement | Ta kontakt på **[snefokk.com/byvandring](https://snefokk.com/byvandring)** |
+| Gratis — krever et Claude-abonnement | Bestill på **[snefokk.com/byvandring](https://snefokk.com/byvandring)** |
 | Du kjører skillen selv i Claude — bygg og oppdater så ofte du vil | Snefokk bygger, tilpasser profilen og leverer, med én tilbakemeldingsrunde |
 | **Ferdig på under en time** (med god internettforbindelse) | **Klart innen typisk en uke** |
 
