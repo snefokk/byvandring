@@ -59,7 +59,7 @@ publiseringsklar tekst.
 - **Museums-/turistsider** = som regel «alle rettigheter forbeholdt». Ikke kopiér
   ordrett uten skriftlig avtale. Bruk som faktakilde og skriv om.
 - **Koordinater/vernedata** (Riksantikvaren/Kulturminnesøk) og **kartdata** (OSM,
-  via Nominatim/Overpass/CARTO) = faktadata, men kreditering er påkrevd. Oppgi dem
+  via Nominatim/Overpass og OSM-fliser) = faktadata, men kreditering er påkrevd. Oppgi dem
   i kolofonen.
 - **Foto** = krediter per bilde (`photo_credit`).
 
@@ -70,6 +70,16 @@ publiseringsklar tekst.
   «Bearbeidet fra Wikipedia (CC BY-SA 4.0)» eller «Vadsø museum»).
 - `points.<id>.photo_credit` — fotograf/arkiv, vises i bildevisningen.
 - `cover.sourceCredit` / `footer_source` — kort kreditt i ark-footer og verktøylinje.
+
+**Kartfliser.** Kartbakgrunnen er OpenStreetMaps egne fliser
+(`tile.openstreetmap.org`) — ingen API-nøkkel. **Ikke bytt tilbake til CARTO
+Voyager (`basemaps.cartocdn.com`)**: den krever nå nøkkel og viser vannmerket
+«API KEY REQUIRED» over hele kartet. OSMs offentlige tile-server er ment for
+moderat bruk; en byvandring er en statisk side med lav trafikk og riktig
+kreditering (`© OpenStreetMap`), som er innenfor. Får en løype høy trafikk, bør
+fliser serveres selv eller via en leverandør — se
+<https://operations.osmfoundation.org/policies/tiles/>. OSM har ikke
+retina-fliser, så kartet er litt mindre skarpt på HiDPI-skjermer enn med CARTO.
 
 **Geografisk dekning.** `source_lookup.py` har innebygde museumssider kun for
 Varanger (Vadsø/Vardø/Sør‑Varanger → varangermuseum.no) pluss noen få andre.
@@ -519,7 +529,7 @@ Med mindre kommunen har egne brand-farger:
 
 ```
 <strong>Kilder og lisenser</strong><br>
-Kartdata © OpenStreetMap-bidragsytere (ODbL) · karttegning © CARTO.<br>
+Kartdata og kartfliser © OpenStreetMap-bidragsytere (ODbL).<br>
 Koordinater og vernedata: Riksantikvaren / Kulturminnesøk.<br>
 Stedstekstene er bearbeidet av [Museum/Næringsforening] på grunnlag av
 Wikipedia (CC BY-SA 4.0) og lokale kilder. Foto: se den enkelte bildetekst.<br>
