@@ -247,12 +247,12 @@ function spreadMarkers(map, markers) {
 function renderMap(route) {
   const cssColor = getComputedStyle(document.documentElement).getPropertyValue(route.colorVar || `--r${route.id}`).trim();
   const map = L.map('map' + route.id, { zoomControl: true, attributionControl: true, scrollWheelZoom: false });
-  // CARTO Voyager (retina via {r}) — bedre lesbarhet ved print enn OSM-standard,
-  // og innenfor tile-bruksvilkår (OSMs egne tile-servere er ikke ment for distribuerte produkter).
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+  // OpenStreetMaps egne fliser — ingen API-nøkkel. CARTO Voyager ble brukt tidligere,
+  // men krever nå nøkkel og viser «API KEY REQUIRED» over hele kartet; ikke bytt tilbake.
+  // OSMs offentlige tile-server er ment for moderat bruk (se SKILL.md, «Kartfliser»).
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
-    subdomains: 'abcd',
-    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> · © <a href="https://carto.com/attributions">CARTO</a>'
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
   }).addTo(map);
 
   const latlngs = [];
